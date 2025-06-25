@@ -1,0 +1,156 @@
+{% extends 'app_shop/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title_tab %}Menu & Pricing{% endblock %}
+{% block main_content%}
+<!-- Page Header Start -->
+<div class="container-fluid bg-dark bg-img p-5 mb-5">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h1 class="display-4 text-uppercase text-white">Menu</h1>
+            <a href="/">Trang chủ</a>
+            <i class="far fa-square text-primary px-2"></i>
+            <a href="/menu/">Menu</a>
+        </div>
+    </div>
+</div>
+
+<!-- Page Header End -->
+
+<!-- Products Start -->
+<div class="container-fluid about py-5">
+    <div class="container">
+        <div class="mb-5">
+            <form method="get" action="#">
+                <div class="row g-3">
+                    <div class="col-sm-6 offset-md-3">
+                        <input type="text" 
+                            class="form-control bg-light px-4" 
+                            placeholder="Nhập từ khóa tìm kiếm..." 
+                            value="{{ keyword }}" style="height: 55px;" 
+                            name="tu_khoa" autocomplete="off">
+                        </input>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="section-title position-relative text-center mx-auto mb-5 pb-3" style="max-width: 600px;">
+            <h2 class="text-primary font-secondary">Thực đơn</h2>
+            <h1 class="display-4 text-uppercase">{{ category.name}}</h1>
+        </div>
+        <div class="tab-class text-center">
+            <div class="tab-content">
+                <div id="tab-1" class="tab-pane fade show p-0 active">
+                    <div class="row g-3">
+                        {% for product in page_obj %}
+                        <div class="col-lg-6">
+                            <div class="d-flex h-100">
+                                <div class="flex-shrink-0">
+                                    <img class="img-fluid" src="{{ product.image.url }}" alt="{{ product.name }}"
+                                        style="width: 150px; " data-bs-target="#product_{{product.id}}"
+                                        data-bs-toggle="modal">
+                                    <h4 class="bg-dark text-primary p-2 m-0">
+                                        {{ product.price|intcomma }}</h4>
+                                </div>
+                                <div class="d-flex flex-column text-start bg-secondary border-inner px-4 pt-4"
+                                    style="width: 100%;">
+                                    <h5 class="text-uppercase" data-bs-toggle="modal"
+                                        data-bs-target="#product_{{product.id}}">
+                                        {{ product.name }}</h5>
+                                    <span>
+                                        {% if product.description is not None%}
+                                        {{ product.description | truncatewords:40 }}
+                                        {% else %}
+                                        Chưa có thông tin
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="product_{{product.id}}" tabindex="-1"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">{{ product.name}}</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <img class="img-fluid" src="{{ product.image.url }}"
+                                                        alt="{{ product.name }}" style="width: 100%; height: auto;">
+                                                </div>
+
+                                                <div class="col-md-8" style="text-align: left;">
+                                                    <h2 class="text-uppercase">
+                                                        {{ product.name }}</h2>
+                                                    <h4 class="text-uppercase text-primary">
+                                                        {{ product.price|intcomma }}</h4>
+                                                    <p class="mt-4" style="text-align: justify;">
+                                                        {{ product.description }}</p>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+                                            <button type="button" class="btn btn-primary"
+                                                data-bs-dismiss="modal">Đóng</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Products End -->
+
+
+<!--Pagination-->
+<nav aria-label="page navigation">
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+        <li class="page-item ">
+            <a class="page-link"
+                href="?page={{ page_obj.previous_page_number }}{% if keyword %}&tu_khoa={{keyword}}{% endif %}">Trước</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#">Trước</a>
+        </li>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        <li class="page-item active">
+            <a class="page-link" href="#">{{ num }}</a>
+        </li>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <li class="page-item">
+        <a class="page-link" href="?page={{ num }}{% if keyword %}&tu_khoa={{keyword}}{% endif %}">{{ num }}</a>
+        {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link"
+                    href="?page={{ page_obj.next_page_number }}{% if keyword %}&tu_khoa={{keyword}}{% endif %}">Tiếp</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#">Tiếp</a>
+                {% endif %}
+        </li>
+    </ul>
+</nav>
+<!--Pagination end-->
+{% endblock %}
