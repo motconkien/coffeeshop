@@ -1,7 +1,12 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
 from django.core.paginator import Paginator
 from app_shop.models import *
 from . import forms
+from django.contrib.auth import login
+from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.views import LogoutView
+
 
 def index(request):
     categories = Category.objects.all()
@@ -50,9 +55,9 @@ def contact(request):
     if request.method == "POST":
         form = forms.FormContact(request.POST)
         if form.is_valid():
-            form.save()  #model form will do everything
+            form.save()  
             result = 'Thank you for your contact'
-            form = forms.FormContact()  # Reset form after successful submission
+            form = forms.FormContact()  
         else:
             result = 'There was an error in your submission'
     else:
@@ -75,3 +80,24 @@ def order(request):
     return render(request, 'app_shop/order.html', {
                             'category_products': category_products
                             })
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            print("User registered and logged in:", user)
+            messages.success(request, 'Registration successful!')
+            return redirect('app_shop:index')
+        else:
+            print("Form errors:", form.errors)  # 🔍 Add this
+            messages.error(request, 'There was an error with your registration.')
+    else:
+        form = UserCreationForm()
+    
+    return render(request, 'registration/register.html', {'form': form})
+
+class CustomLogoutView(LogoutView):
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)

@@ -83,8 +83,17 @@
                         </span>
                         {% endif %}
                     </div>
-                </a>
-
+                    </a>
+                    {% if user.is_authenticated %}
+                    <span class="nav-link text-white">Hello, {{ user.username }}</span>
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-link nav-link">Logout</button>
+                        </form>
+                    {% else %}
+                    <a href="{% url 'login' %}?next={% url 'app_shop:index' %}" class="nav-link">Login</a>
+                    <a href="{% url 'register' %}" class="nav-link">Register</a>
+                    {% endif %}
 
                 </div>
 
