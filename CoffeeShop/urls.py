@@ -22,6 +22,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('app_shop.urls')),
+    path('cart/', include('cart.urls'))
 ]
 # This file is part of the CoffeeShop project.
 # It defines the URL patterns for the project, including the admin interface and the app_shop application.

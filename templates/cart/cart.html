@@ -1,0 +1,64 @@
+{% extends 'app_shop/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title_tab %}Cart{% endblock %}
+{% block main_content %}
+<div class="container">
+    <h2>Your Cart</h2>
+    
+    {% if not cart %}
+        <p>Your cart is empty.</p>
+    {% else %}
+        <table class="table table-bordered align-middle text-center">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">Image</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Price</th>
+                    <th scope="col" style="min-width: 150px;">Quantity</th>
+                    <th scope="col">Subtotal</th>
+                    <th scope="col" style="width: 100px;">Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart %}
+                <tr>
+                    <td>
+                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" width="50" class="img-thumbnail">
+                    </td>
+                    <td class="text-start">{{ item.product.name }}</td>
+                    <td>{{ item.product.price|intcomma }} VND</td>
+                    <td>
+                        <form method="post" action="{% url 'app_cart:update_quantity' item.product.id %}"
+                            class="d-flex justify-content-center align-items-center gap-1 ">
+                            {% csrf_token %}
+                            <input type="number" name="quantity" value="{{ item.quantity }}" min="1"
+                                class="form-control form-control-sm text-center quantity-input" style="width: 60px;">
+                        </form>
+                    </td>
+                    <td class="subtotal-cell">{{ item.subtotal|intcomma }} VND</td>
+                    <td>
+                        <form method="post" action="{% url 'app_cart:remove_item' item.product.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-link p-0 m-0" title="Remove item">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h4 class="text-end">Total: <span id="total-price">{{ total_price|intcomma }}</span> VND</h4>
+        <div class="text-end mt-3">
+            <a href="" class="btn btn-primary" style="width: 200px;">
+                Payment
+            </a>
+            </div>
+
+    {% endif %}
+</div>
+{% endblock %}
+
