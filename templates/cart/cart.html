@@ -53,9 +53,10 @@
 
         <h4 class="text-end">Total: <span id="total-price">{{ total_price|intcomma }}</span> VND</h4>
         <div class="text-end mt-3">
-            <a href="" class="btn btn-primary" style="width: 200px;">
-                Payment
-            </a>
+            <form method="post" action="{% url 'order:checkout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success">Check out</button>
+            </form>
             </div>
 
     {% endif %}

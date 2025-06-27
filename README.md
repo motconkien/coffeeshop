@@ -45,12 +45,25 @@ Clone the repository:
 
 4. **Cart Actions**  
    - Update quantity using the number input.  
-   - Remove items with the 🗑️ trash icon.  
+   - Remove items.  
    - Total updates automatically.
 
-5. **(Coming Soon)**  
-   - User registration/login  
-   - Checkout and payment flow  
-   - Order history page
+The following features have been implemented to complete the shopping experience:
+
+5. **User Registration & Login**  
+- Users can register an account using a simple form.
+- Login and logout functionality integrated with Django's authentication system.
+- After login, cart items are preserved and associated with the authenticated user.
+
+6. **Checkout and Payment Flow**
+- Users proceed to a **Checkout** page where they provide:
+  - Full name
+  - Phone number
+  - Delivery address
+  - Payment method (e.g. Cash on Delivery, Bank Transfer)
+- On submission:
+  - An order is created and saved in the database.
+  - The cart is cleared automatically.
+  - Users are redirected to a success confirmation page.
 
 

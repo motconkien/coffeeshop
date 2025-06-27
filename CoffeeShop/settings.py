@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'app_shop',
-    'cart'
+    'cart',
+    'app_order',
+    'payment'
 ]
 
 MIDDLEWARE = [
@@ -133,3 +135,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'           # SMTP server
+EMAIL_PORT = 587                        # SMTP port (587 for TLS)
+EMAIL_USE_TLS = True                    # Use TLS
+EMAIL_HOST_USER = 'hoanghuyen.hh20897@gmail.com'    # Your email address
+EMAIL_HOST_PASSWORD = 'vxcm rxhy oavm hsap'  # Your email password or app-specific password
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER   # Default "from" email address

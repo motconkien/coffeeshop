@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
-from cart.models import *
-from cart.cart import *
+from cart.models import CartItem
+from cart.cart import Cart
 from django.contrib import messages
 from django.views.decorators.http import require_POST
+from app_shop.models import Product
 
 
 # Create your views here.

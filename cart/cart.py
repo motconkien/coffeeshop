@@ -8,6 +8,7 @@ class Cart:
         self.user = request.user
         self.is_authenticated = request.user.is_authenticated
         self.session_cart = request.session.get("cart",{})
+        self.cart = self.session_cart
     
     #add product 
     def add(self, product, quantity=1):
@@ -47,6 +48,7 @@ class Cart:
     def clear(self):
         if self.is_authenticated:
             items = CartItem.objects.filter(user=self.user)
+            items.delete()
         self.session['cart'] = {}
         self.save()
     

@@ -32,6 +32,7 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('logout/', CustomLogoutView.as_view(next_page='app_shop:index'), name='logout'),
     path('register/', shop_views.register, name='register'),
+    path('order/', include('app_order.urls'))
 ]
 # This file is part of the CoffeeShop project.
 # It defines the URL patterns for the project, including the admin interface and the app_shop application.
